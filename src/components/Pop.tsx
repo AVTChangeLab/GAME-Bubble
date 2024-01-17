@@ -52,8 +52,8 @@ export default function Pop({ data={position:{x:0,y:0,z:-1},radius:1}, disable} 
           onRest:()=>disable()
         })
 
-        const particles = Array.from({length:25}, (_v,k) => {
-            const angle = (k/25 * 360) * Math.PI/180
+        const particles = Array.from({length:10}, (_v,k) => {
+            const angle = (k/10 * 360) * Math.PI/180
             const radius = data.radius
             const x = Math.cos(angle) * radius
             const y = Math.sin(angle) * radius

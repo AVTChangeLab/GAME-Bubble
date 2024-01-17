@@ -5,6 +5,7 @@ import { useThree } from "@react-three/fiber"
 import { useGameData, bubbleT } from "../hooks/useGameData"
 import type { Vector3Object } from "@react-three/rapier"
 import { GameDataT } from "../App"
+import font from '../assets/Poppins-SemiBold.ttf'
 
 export default function BubbleManager({gameData, postScore, postEnd}:{gameData:GameDataT, postScore:(answer:boolean)=> void, postEnd:()=> void}) {
 
@@ -61,6 +62,9 @@ export default function BubbleManager({gameData, postScore, postEnd}:{gameData:G
           text={position.textContent}
           position={position.position}
           clickHandler={clickHandler}
+          fontColor={gameData.fontColor}
+          fontSize={position.fontSize}
+          font={font}
         />
       ))}
       {fx ? <Pop data={fxPos} disable={() => setFx(false)} /> : <></>}

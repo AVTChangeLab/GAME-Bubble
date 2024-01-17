@@ -16,6 +16,7 @@ export type GameDataT = {
   totalBubbles: number
   bubbles: bubbleDataT[]
   color: string
+  fontColor: string
 }
 
 type GameEventT = {

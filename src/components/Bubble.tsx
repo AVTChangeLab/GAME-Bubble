@@ -17,6 +17,9 @@ export default function Bubble({
   id,
   answer,
   clickHandler,
+  fontColor,
+  fontSize,
+  font
 }: {
   density?: number
   text?: string
@@ -24,6 +27,9 @@ export default function Bubble({
   position: Vector3Object
   id: number
   answer:boolean,
+  fontColor: string,
+  fontSize: number,
+  font: string
   clickHandler: (id: number, position:Vector3Object, radius:number, answer:boolean) => void
 }) {
   const rB = useRef<RapierRigidBody>(null)
@@ -128,14 +134,15 @@ export default function Bubble({
             />
           </animated.mesh>
           <Text
+            font={font}
             maxWidth={radius}
             textAlign="center"
             anchorX="center"
             anchorY="middle"
             whiteSpace="overflowWrap"
             overflowWrap="normal"
-            fontSize={0.25}
-            color="black"
+            fontSize={fontSize}
+            color={fontColor}
           >
             {text}
           </Text>
