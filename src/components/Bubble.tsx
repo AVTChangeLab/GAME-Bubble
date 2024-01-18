@@ -1,4 +1,4 @@
-import { Text } from "@react-three/drei"
+import { Text, useTexture } from "@react-three/drei"
 import {
   RigidBody,
   RapierRigidBody,
@@ -6,6 +6,7 @@ import {
   vec3,
   Vector3Object,
 } from "@react-three/rapier"
+import { Vector2 } from "three"
 import { useRef, useEffect, useState, useCallback } from "react"
 import { useSpring, animated } from "@react-spring/three"
 
@@ -19,21 +20,38 @@ export default function Bubble({
   clickHandler,
   fontColor,
   fontSize,
-  font
+  font,
+  img,
+  color,
 }: {
   density?: number
   text?: string
   radius?: number
   position: Vector3Object
   id: number
-  answer:boolean,
-  fontColor: string,
-  fontSize: number,
+  answer: boolean
+  fontColor: string
+  fontSize: number
   font: string
-  clickHandler: (id: number, position:Vector3Object, radius:number, answer:boolean) => void
+  img: string | null
+  color: string
+  clickHandler: (
+    id: number,
+    position: Vector3Object,
+    radius: number,
+    color: string,
+    answer: boolean
+  ) => void
 }) {
+
   const rB = useRef<RapierRigidBody>(null)
   const [hovered, setHovered] = useState<boolean>(false)
+  
+  const url = img ? new URL(img, import.meta.url).href : new URL('/fallback.png', import.meta.url).href
+  
+  const texture = useTexture(url)
+  texture.repeat = new Vector2(2.5,1.25)
+  texture.center = new Vector2(0.06,0.5)
 
   const [{ scale }, api] = useSpring(
     () => ({
@@ -80,18 +98,18 @@ export default function Bubble({
 
   const handleClick = useCallback(() => {
     api.start({
-      to: [{ scale: 0.5 }, { scale: 1.1 }],
-      onRest: () => clickHandler(id, rB.current!.translation(), radius, answer),
+      to: [{ scale: 0.8 }, { scale: 1.1 }],
+      onRest: () => clickHandler(id, rB.current!.translation(), radius, color, answer),
       config: { friction: 10, mass: 0.5, tension: 500 },
     })
-  }, [api, clickHandler, id, radius, answer])
+  }, [api, clickHandler, id, radius, color, answer])
 
   return (
     <>
       <RigidBody
         ref={rB}
-        linearDamping={0.2}
-        position={[-100,0,-1]}
+        linearDamping={0}
+        position={[-100, 0, -1]}
         onSleep={() =>
           rB.current?.setLinvel(
             {
@@ -121,7 +139,7 @@ export default function Bubble({
             <sphereGeometry args={[radius, 64, 32]} />
             <meshPhysicalMaterial
               transparent
-              color="white"
+              color={color}
               depthWrite={false}
               transmission={1}
               thickness={0.001}
@@ -131,6 +149,7 @@ export default function Bubble({
               specularColor="white"
               specularIntensity={1}
               reflectivity={1}
+              map={texture ? texture : null}
             />
           </animated.mesh>
           <Text

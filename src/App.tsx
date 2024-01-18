@@ -1,6 +1,7 @@
 import { Suspense, useEffect, useRef, useState } from "react"
 import { Canvas } from "@react-three/fiber"
 import { Physics } from "@react-three/rapier"
+import { Preload } from "@react-three/drei"
 import ViewportCollider from "./components/ViewportCollider"
 import BubbleManager from "./components/BubbleManager"
 import "./App.css"
@@ -9,7 +10,10 @@ type bubbleDataT = {
   bubbleText: string
   bubbleAnswer: boolean
   fontSize: number
-  radius: number
+  radius: number,
+  color: string,
+  img: string
+
 }
 
 export type GameDataT = {
@@ -94,6 +98,7 @@ function App() {
           position={[0, 0, -5]}
         />
         <Suspense>
+          <Preload all />
           <Physics colliders={false} gravity={[0, 0, 0]}>
             <ViewportCollider />
             {gameData ? (
