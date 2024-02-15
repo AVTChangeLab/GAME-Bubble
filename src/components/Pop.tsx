@@ -56,8 +56,8 @@ export const Pop = memo(function ({
     onRest: () => disable(),
   })
 
-  const particles = Array.from({ length: 30 }, (_v, k) => {
-    const angle = ((k / 30) * 360 * Math.PI) / 180
+  const particles = Array.from({ length: 20 }, (_v, k) => {
+    const angle = ((k / 20) * 360 * Math.PI) / 180
     const radius = data.radius
     const x = Math.cos(angle) * radius
     const y = Math.sin(angle) * radius
