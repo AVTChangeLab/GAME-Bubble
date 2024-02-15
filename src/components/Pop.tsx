@@ -44,7 +44,7 @@ export const Pop = memo(function ({
   // },[])
 
   const { opacity } = useSpring({
-    from: { opacity: 1 },
+    from: { opacity: 0.5 },
     to: { opacity: 0 },
     delay: 300,
     config: {
@@ -56,8 +56,8 @@ export const Pop = memo(function ({
     onRest: () => disable(),
   })
 
-  const particles = Array.from({ length: 10 }, (_v, k) => {
-    const angle = ((k / 10) * 360 * Math.PI) / 180
+  const particles = Array.from({ length: 30 }, (_v, k) => {
+    const angle = ((k / 30) * 360 * Math.PI) / 180
     const radius = data.radius
     const x = Math.cos(angle) * radius
     const y = Math.sin(angle) * radius
@@ -70,20 +70,16 @@ export const Pop = memo(function ({
 
   return (
     <Instances position={[data.position.x, data.position.y, -1]}>
-      <sphereGeometry args={[1, 16, 8]} />
-      <animated.meshPhysicalMaterial
+      <circleGeometry args={[1, 16, 8]} />
+      <animated.meshStandardMaterial
         transparent
         color={data.color}
-        depthWrite={false}
-        transmission={1}
-        thickness={0.001}
+        depthWrite={false}  
         roughness={0.15}
         metalness={0}
-        ior={1.5}
-        specularColor="white"
-        specularIntensity={1}
-        reflectivity={1}
         opacity={opacity}
+        emissive={data.color}
+        emissiveIntensity={0.5}
       />
       {particles.map((data, i) => (
         <InstancedPops key={i} {...data} />

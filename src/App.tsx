@@ -13,7 +13,7 @@ type bubbleDataT = {
   radius: number,
   color: string,
   img: string
-
+  opacity: number
 }
 
 export type GameDataT = {
@@ -89,14 +89,14 @@ function App() {
         className="noSelect"
       >
         <ambientLight color="white" intensity={1} />
-        <directionalLight intensity={5} color="white" position={[20, 20, 10]} />
+        {/* <directionalLight intensity={5} color="white" position={[20, 20, 10]} />
         <directionalLight intensity={5} color="white" position={[-20, 5, 4]} />
         <pointLight
           intensity={200}
           color="white"
           decay={0.05}
           position={[0, 0, -5]}
-        />
+        /> */}
         <Suspense>
           <Preload all />
           <Physics colliders={false} gravity={[0, 0, 0]}>

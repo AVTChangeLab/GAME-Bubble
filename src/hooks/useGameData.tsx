@@ -9,6 +9,7 @@ export type bubbleT = {
   fontSize: number
   color: string
   img: string | null
+  opacity: number
 }
 
 import { GameDataT } from "../App"
@@ -31,6 +32,7 @@ export function useGameData(
   const radius = gameData.bubbles.map((val) => (val.radius ? val.radius : 1))
   const color = gameData.bubbles.map((val) => (val.color ? val.color : "white"))
   const img = gameData.bubbles.map((val) => (val.img ? val.img : null))
+  const opacity = gameData.bubbles.map((val) => (val.opacity ? val.opacity : 1))
 
   const clamp = (value: number, min: number, max: number): number => {
     return Math.min(Math.max(value, min), max)
@@ -83,6 +85,7 @@ export function useGameData(
           fontSize: fontSize[index],
           color: color[index],
           img: img[index],
+          opacity: opacity[index]
         },
       ]
     })

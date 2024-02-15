@@ -68,6 +68,7 @@ export default function BubbleManager({gameData, postScore, postEnd}:{gameData:G
           font={font}
           color={position.color}
           img={position.img}
+          opacity={position.opacity}
         />
       ))}
       {fx ? <Pop data={fxPos} disable={() => setFx(false)} /> : <></>}

@@ -6,7 +6,6 @@ import {
   vec3,
   Vector3Object,
 } from "@react-three/rapier"
-import { Vector2 } from "three"
 import { useRef, useEffect, useState, useCallback } from "react"
 import { useSpring, animated } from "@react-spring/three"
 
@@ -23,6 +22,7 @@ export default function Bubble({
   font,
   img,
   color,
+  opacity
 }: {
   density?: number
   text?: string
@@ -35,6 +35,7 @@ export default function Bubble({
   font: string
   img: string | null
   color: string
+  opacity: number
   clickHandler: (
     id: number,
     position: Vector3Object,
@@ -48,10 +49,9 @@ export default function Bubble({
   const [hovered, setHovered] = useState<boolean>(false)
   
   const url = img ? new URL(img, import.meta.url).href : new URL('/fallback.png', import.meta.url).href
+  const fontProp = {'material-toneMapped': false}
   
   const texture = useTexture(url)
-  texture.repeat = new Vector2(2.5,1.25)
-  texture.center = new Vector2(0.06,0.5)
 
   const [{ scale }, api] = useSpring(
     () => ({
@@ -85,6 +85,8 @@ export default function Bubble({
   useEffect(() => {
     document.body.style.cursor = hovered ? "pointer" : "default"
   }, [hovered])
+
+  useEffect
 
   const handleForce = useCallback(
     ({ totalForceMagnitude }: { totalForceMagnitude: number }) => {
@@ -136,20 +138,18 @@ export default function Bubble({
             }}
             onClick={handleClick}
           >
-            <sphereGeometry args={[radius, 64, 32]} />
-            <meshPhysicalMaterial
+            <circleGeometry args={[radius, 64, 32]} />
+            <meshStandardMaterial
               transparent
               color={color}
               depthWrite={false}
-              transmission={1}
-              thickness={0.001}
               roughness={0.15}
               metalness={0}
-              ior={1.5}
-              specularColor="white"
-              specularIntensity={1}
-              reflectivity={1}
               map={texture ? texture : null}
+              emissive={color}
+              emissiveIntensity={0.5}
+              emissiveMap={texture ? texture : null}
+              opacity={opacity}
             />
           </animated.mesh>
           <Text
@@ -162,6 +162,8 @@ export default function Bubble({
             overflowWrap="normal"
             fontSize={fontSize}
             color={fontColor}
+            position={[0,0,0.1]}
+            {...fontProp}
           >
             {text}
           </Text>
