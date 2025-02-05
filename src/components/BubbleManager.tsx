@@ -1,14 +1,24 @@
 import Bubble from "./Bubble"
 import { Pop, PopT } from "./Pop"
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react"
 import { useThree } from "@react-three/fiber"
 import { useGameData, bubbleT } from "../hooks/useGameData"
 import type { Vector3Object } from "@react-three/rapier"
 import { GameDataT } from "../App"
+import Lottie from "./Lottie"
+import correct from "../assets/lotties/correct.json?url"
+import halfRight from "../assets/lotties/halfRight.json?url"
+import incorrect from "../assets/lotties/incorrect.json?url"
 
-export default function BubbleManager({gameData, postScore, postEnd}:{gameData:GameDataT, postScore:(answer:boolean)=> void, postEnd:()=> void}) {
-
-  const font = new URL('/Poppins-SemiBold.ttf', import.meta.url).href
+export default function BubbleManager({
+  gameData,
+  postScore,
+  postEnd,
+}: {
+  gameData: GameDataT
+  postScore: (points: number, text:string) => void
+  postEnd: () => void
+}) {
   const get = useThree((state) => state.get)
   const { width, height } = get().viewport
   const amount = useGameData(width, height, gameData)
@@ -17,61 +27,61 @@ export default function BubbleManager({gameData, postScore, postEnd}:{gameData:G
   const [fx, setFx] = useState<boolean>(false)
   const [fxPos, setFxPos] = useState<PopT>()
   const [count, setCount] = useState<number>(0)
+  const [lottie, setLottie] = useState<string>(correct)
 
   const clickHandler = (
     id: number,
     position: Vector3Object,
-    radius: number,
+    size: number,
     color: string,
-    answer: boolean
+    points: number,
+    text: string
   ) => {
+    if (fx) return
     document.body.style.cursor = "default"
+    if (points === 20) setLottie(correct)
+    if (points === 10) setLottie(halfRight)
+    if (points === 0) setLottie(incorrect)
     setCount((prev) => prev + 1)
-    postScore(answer)
+    postScore(points, text)
     setPos(pos.filter((a) => a.id !== id))
-    setFxPos({ position: position, radius: radius, color: color })
+    setFxPos({ position: position, radius: size, color: color })
     setFx(true)
   }
 
   useEffect(() => {
-    if(count == 2){
+    if (count == gameData.endAt && fx === false) {
       postEnd()
     }
-  },[count, postEnd])
-
-  // function handleClick(artworkId, nextSeen) {
-  //   setMyList(myList.map(artwork => {
-  //     if (artwork.id === artworkId) {
-  //       // Create a *new* object with changes
-  //       return { ...artwork, seen: nextSeen };
-  //     } else {
-  //       // No changes
-  //       return artwork;
-  //     }
-  //   }));
-  // }
+  }, [count, postEnd, gameData.endAt, fx])
 
   return (
     <>
       {pos.map((position) => (
         <Bubble
           key={position.id}
-          radius={position.radius}
+          size={position.size}
           id={position.id}
-          answer={position.bubbleAnswer}
+          points={position.points}
           density={0.001}
           text={position.textContent}
           position={position.position}
           clickHandler={clickHandler}
           fontColor={gameData.fontColor}
-          fontSize={position.fontSize}
-          font={font}
-          color={position.color}
-          img={position.img}
-          opacity={position.opacity}
+          fontSize={gameData.fontSize}
+          color={"white"}
+          opacity={0.6}
+          fontWeight={gameData.fontWeight}
         />
       ))}
-      {fx ? <Pop data={fxPos} disable={() => setFx(false)} /> : <></>}
+      {fx ? (
+        <Suspense>
+          <Pop data={fxPos} disable={() => setFx(false)} />
+          <Lottie url={lottie} position={fxPos?.position} />
+        </Suspense>
+      ) : (
+        <></>
+      )}
     </>
   )
 }
