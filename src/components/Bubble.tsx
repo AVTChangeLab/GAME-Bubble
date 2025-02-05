@@ -8,50 +8,49 @@ import {
 } from "@react-three/rapier"
 import { useRef, useEffect, useState, useCallback } from "react"
 import { useSpring, animated } from "@react-spring/three"
+import img from "../assets/img/img.png"
+import font from "../assets/font/Inter.ttf"
 
 export default function Bubble({
   density = 0.000001,
-  radius = 1,
+  size = 1,
   text = "hi",
   position,
   id,
-  answer,
+  points,
   clickHandler,
   fontColor,
   fontSize,
-  font,
-  img,
   color,
-  opacity
+  opacity,
+  fontWeight,
 }: {
   density?: number
   text?: string
-  radius?: number
+  size?: number
   position: Vector3Object
   id: number
-  answer: boolean
+  points: number
   fontColor: string
   fontSize: number
-  font: string
-  img: string | null
   color: string
   opacity: number
+  fontWeight: number
   clickHandler: (
     id: number,
     position: Vector3Object,
-    radius: number,
+    size: number,
     color: string,
-    answer: boolean
+    points: number,
+    text: string
   ) => void
 }) {
-
   const rB = useRef<RapierRigidBody>(null)
   const [hovered, setHovered] = useState<boolean>(false)
-  
-  const url = img ? new URL(img, import.meta.url).href : new URL('/fallback.png', import.meta.url).href
-  const fontProp = {'material-toneMapped': false}
-  
-  const texture = useTexture(url)
+
+  const fontProp = { "material-toneMapped": false }
+
+  const texture = useTexture(img ?? "")
 
   const [{ scale }, api] = useSpring(
     () => ({
@@ -86,8 +85,6 @@ export default function Bubble({
     document.body.style.cursor = hovered ? "pointer" : "default"
   }, [hovered])
 
-  useEffect
-
   const handleForce = useCallback(
     ({ totalForceMagnitude }: { totalForceMagnitude: number }) => {
       api.start({
@@ -101,10 +98,11 @@ export default function Bubble({
   const handleClick = useCallback(() => {
     api.start({
       to: [{ scale: 0.8 }, { scale: 1.1 }],
-      onRest: () => clickHandler(id, rB.current!.translation(), radius, color, answer),
+      onRest: () =>
+        clickHandler(id, rB.current!.translation(), size, color, points, text),
       config: { friction: 10, mass: 0.5, tension: 500 },
     })
-  }, [api, clickHandler, id, radius, color, answer])
+  }, [api, clickHandler, id, size, color, points, text])
 
   return (
     <>
@@ -122,11 +120,9 @@ export default function Bubble({
             true
           )
         }
-        // onCollisionEnter={() => setBumped(true)}
-        // onCollisionExit={() => setBumped(false)}
         onContactForce={handleForce}
       >
-        <BallCollider args={[radius]} restitution={1} density={density}>
+        <BallCollider args={[size]} restitution={1} density={density}>
           <animated.mesh
             scale={scale.to((x) => [x, x, 0.25])}
             onPointerOver={() => setHovered(true)}
@@ -138,7 +134,7 @@ export default function Bubble({
             }}
             onClick={handleClick}
           >
-            <circleGeometry args={[radius, 64, 32]} />
+            <circleGeometry args={[size, 64, 32]} />
             <meshStandardMaterial
               transparent
               color={color}
@@ -154,15 +150,16 @@ export default function Bubble({
           </animated.mesh>
           <Text
             font={font}
-            maxWidth={radius}
+            maxWidth={size}
             textAlign="center"
             anchorX="center"
             anchorY="middle"
             whiteSpace="overflowWrap"
             overflowWrap="normal"
             fontSize={fontSize}
+            fontWeight={fontWeight}
             color={fontColor}
-            position={[0,0,0.1]}
+            position={[0, 0, 0.1]}
             {...fontProp}
           >
             {text}

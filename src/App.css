@@ -14,7 +14,8 @@ main {
 
 body {
   background: transparent;
-  color: #f0f0f0;
+  color: #081b27;
+  font-family: "Inter", sans-serif;
 }
 
 :root {
@@ -31,7 +32,7 @@ body {
   user-select: none;
 }
 
-:root:focus{
+:root:focus {
   outline: none !important;
 }
 
@@ -46,4 +47,9 @@ body {
 }
 .noSelect:focus {
   outline: none !important;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("./assets/font/Inter.ttf") format("truetype");
 }
