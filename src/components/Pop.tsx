@@ -19,38 +19,15 @@ export const Pop = memo(function ({
   data?: PopT
   disable: () => void
 }) {
-  //   const instancedMeshRef = useRef<InstancedMesh | null>(null)
-  //   useEffect(() => {
-  //     // Set positions
-  //     if (instancedMeshRef.current) {
-  //       for (let i = 0; i < count; i++) {
-  //         const angle = (i/count * 360) * Math.PI/180
-  //         const radius = 1
-  //         const x = Math.cos(angle) * radius
-  //         const y = Math.sin(angle) * radius
-  //         temp.position.set(x, y, -1)
-  //         temp.scale.set(0.1,0.1,1)
-  //         temp.updateMatrix()
-  //         instancedMeshRef.current.setMatrixAt(i, temp.matrix)
-  //       }
-  //       // Update the instance
-  //       instancedMeshRef.current.instanceMatrix.needsUpdate = true
-  //     }
-  //   }, [count, temp])
-  //   return <instancedMesh ref={instancedMeshRef} args={[box, pbr, count]} />
-  // const popDataRef = useRef(null)
-  // useEffect(() => {
-
-  // },[])
 
   const { opacity } = useSpring({
-    from: { opacity: 0.5 },
+    from: { opacity: 0.8 },
     to: { opacity: 0 },
     delay: 300,
     config: {
       mass: 20,
-      tension: 120,
-      friction: 10,
+      tension: 300,
+      friction: 1,
       clamp: true,
     },
     onRest: () => disable(),
