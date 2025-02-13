@@ -7,37 +7,37 @@
   "endAt": 3,
   "bubbles": [
     {
-      "bubbleText": "Discuss disease state",
+      "bubbleText": "Bubble 1",
       "size": 1.25,
       "points": 0
     },
     {
-      "bubbleText": "Understand HCP's treatment goals for patients",
+      "bubbleText": "Bubble 2",
       "size": 1.75,
       "points": 20
     },
     {
-      "bubbleText": "Check understanding of Efficacy, safety and tolerability data",
+      "bubbleText": "Bubble 3",
       "size": 2,
       "points": 20
     },
     {
-      "bubbleText": "Understand thoughts on current guidelines",
+      "bubbleText": "Bubble 4",
       "size": 1.75,
       "points": 20
     },
     {
-      "bubbleText": "Ask for ISS ideas",
+      "bubbleText": "Bubble 5",
       "size": 1.25,
       "points": 0
     },
     {
-      "bubbleText": "Discuss MOA of product vs other drug classes",
+      "bubbleText": "Bubble 6",
       "size": 1.75,
       "points": 10
     },
     {
-      "bubbleText": "Invite to present case series at congress",
+      "bubbleText": "Bubble 7",
       "size": 1.5,
       "points": 0
     }
