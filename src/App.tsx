@@ -5,9 +5,10 @@ import { Preload } from "@react-three/drei"
 import ViewportCollider from "./components/ViewportCollider"
 import BubbleManager from "./components/BubbleManager"
 import bg from "./assets/img/Background.jpg"
-import appData from "./assets/config/appData.json"
+import config from "./assets/config/config.json"
 import "./App.css"
 import { Intro } from "./components/Intro"
+import InfoPopup from "./components/InfoPopup"
 
 type bubbleDataT = {
   bubbleText: string
@@ -37,7 +38,7 @@ function App() {
           value: points,
           choice: text,
         },
-        "*"
+        "*",
       )
     }
   }
@@ -47,7 +48,7 @@ function App() {
   }
 
   useEffect(() => {
-    setGameData(appData)
+    setGameData(config)
   }, [])
 
   return (
@@ -66,6 +67,7 @@ function App() {
         }}
       />
       {intro ? <Intro show={setIntro} /> : null}
+      <InfoPopup />
       <Canvas
         orthographic
         camera={{ position: [0, 0, 1], zoom: 75 }}
