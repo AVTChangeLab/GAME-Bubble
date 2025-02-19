@@ -16,7 +16,7 @@ export default function BubbleManager({
   postEnd,
 }: {
   gameData: GameDataT
-  postScore: (points: number, text:string) => void
+  postScore: (points: number, text: string) => void
   postEnd: () => void
 }) {
   const get = useThree((state) => state.get)
@@ -35,7 +35,7 @@ export default function BubbleManager({
     size: number,
     color: string,
     points: number,
-    text: string
+    text: string,
   ) => {
     if (fx) return
     document.body.style.cursor = "default"
@@ -70,7 +70,7 @@ export default function BubbleManager({
           fontColor={gameData.fontColor}
           fontSize={gameData.fontSize}
           color={"white"}
-          opacity={0.6}
+          opacity={1}
           fontWeight={gameData.fontWeight}
         />
       ))}
