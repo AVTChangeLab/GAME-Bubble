@@ -1,5 +1,5 @@
 {
-  "totalBubbles": 7,
+  "totalBubbles": 8,
   "color": "white",
   "fontColor": "black",
   "fontWeight": 500,
@@ -7,38 +7,43 @@
   "endAt": 3,
   "bubbles": [
     {
-      "bubbleText": "Bubble 1",
-      "size": 1.25,
+      "bubbleText": "It enhances strategies by segmenting customer data",
+      "size": 1.5,
       "points": 0
     },
     {
-      "bubbleText": "Bubble 2",
+      "bubbleText": "The tool uses predictive analytics to forecast patient actions",
       "size": 1.75,
       "points": 20
     },
     {
-      "bubbleText": "Bubble 3",
+      "bubbleText": "The tool integrates with other systems to streamline customer data management",
       "size": 2,
       "points": 20
     },
     {
-      "bubbleText": "Bubble 4",
+      "bubbleText": "It improves sales targeting by identifying high-value customers",
       "size": 1.75,
       "points": 20
     },
     {
-      "bubbleText": "Bubble 5",
-      "size": 1.25,
+      "bubbleText": "It helps businesses improve customer retention by identifying needs",
+      "size": 1.75,
       "points": 0
     },
     {
-      "bubbleText": "Bubble 6",
+      "bubbleText": "It helps identify patterns in customer behavior and interactions",
       "size": 1.75,
       "points": 10
     },
     {
-      "bubbleText": "Bubble 7",
-      "size": 1.5,
+      "bubbleText": "It lowers sales targeting by identifying high-value customers",
+      "size": 1.75,
+      "points": 0
+    },
+    {
+      "bubbleText": "Real-time insights allow decisions to be made quickly",
+      "size": 2,
       "points": 0
     }
   ]

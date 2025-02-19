@@ -42,7 +42,7 @@ export default function Bubble({
     size: number,
     color: string,
     points: number,
-    text: string
+    text: string,
   ) => void
 }) {
   const rB = useRef<RapierRigidBody>(null)
@@ -62,7 +62,7 @@ export default function Bubble({
         clamp: true,
       },
     }),
-    []
+    [],
   )
 
   useEffect(() => {
@@ -76,7 +76,7 @@ export default function Bubble({
           y: Math.random() < 0.5 ? -1.2 : 1.2,
           z: 0,
         },
-        true
+        true,
       )
     }
   }, [position])
@@ -92,7 +92,7 @@ export default function Bubble({
         onRest: (_res, cntr) => cntr.start({ scale: 1 }),
       })
     },
-    [api]
+    [api],
   )
 
   const handleClick = useCallback(() => {
@@ -117,7 +117,7 @@ export default function Bubble({
               y: Math.random() < 0.5 ? -1.2 : 1.2,
               z: 0,
             },
-            true
+            true,
           )
         }
         onContactForce={handleForce}
