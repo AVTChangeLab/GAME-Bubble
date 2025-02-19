@@ -1,4 +1,3 @@
-import React from "react"
 import info_bg from "../assets/img/info_background.png"
 import bubble_icon from "../assets/img/bubble_icon.svg"
 
