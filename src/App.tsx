@@ -1,34 +1,22 @@
-import { Suspense, useEffect, useState } from "react"
+import { Suspense, useEffect, useState, useContext } from "react"
 import { Canvas } from "@react-three/fiber"
 import { Physics } from "@react-three/rapier"
 import { Preload } from "@react-three/drei"
 import ViewportCollider from "./components/ViewportCollider"
 import BubbleManager from "./components/BubbleManager"
-import config from "./assets/config/config.json"
 import "./App.css"
 import { Intro } from "./components/Intro"
 import InfoPopup from "./components/InfoPopup"
-import { ConfigProvider } from "./components/ConfigContext"
+import { ConfigProvider, ConfigContext } from "./components/ConfigContext"
 
-type bubbleDataT = {
-  bubbleText: string
-  points: number
-  size: number
-}
-
-export type GameDataT = {
-  totalBubbles: number
-  bubbles: bubbleDataT[]
-  color: string
-  fontColor: string
-  endAt: number
-  fontSize: number
-  fontWeight: number
-}
-
-function App() {
+// Move the main App logic to a separate component
+function GameApp({ config }: { config: Config }) {
   const [gameData, setGameData] = useState<GameDataT | null>(null)
   const [intro, setIntro] = useState<boolean>(false)
+
+  useEffect(() => {
+    setGameData(config)
+  }, [config])
 
   const postScore = (points: number, text: string) => {
     if (window.parent) {
@@ -47,59 +35,70 @@ function App() {
     window.parent.postMessage({ message: "nextSlide", value: "nextSlide" }, "*")
   }
 
-  useEffect(() => {
-    setGameData(config)
-  }, [])
-
   return (
-    <ConfigProvider>
-      <main>
-        <div
-          style={{
-            backgroundImage: `url('${config.backgroundImage}')`,
-            backgroundPosition: "center",
-            backgroundSize: "cover",
-            width: "100%",
-            height: "100%",
-            position: "absolute",
-            top: 0,
-            left: 0,
-            zIndex: -1,
-          }}
-        />
-        {intro ? <Intro show={setIntro} /> : null}
-        <InfoPopup />
-        <Canvas
-          orthographic
-          camera={{ position: [0, 0, 1], zoom: 75 }}
-          className="noSelect"
-          style={{ visibility: intro ? "hidden" : "visible" }}
-        >
-          <ambientLight color="white" intensity={0.5} />
-          <directionalLight
-            intensity={5}
-            color="white"
-            position={[20, 20, 10]}
-          />
-          <Suspense>
-            <Preload all />
-            <Physics colliders={false} gravity={[0, 0, 0]}>
-              <ViewportCollider />
-              {gameData ? (
-                <BubbleManager
-                  gameData={gameData}
-                  postScore={postScore}
-                  postEnd={postEnd}
-                />
-              ) : (
-                <></>
-              )}
-            </Physics>
-          </Suspense>
-        </Canvas>
-      </main>
-    </ConfigProvider>
+    <main>
+      <div
+        style={{
+          backgroundImage: `url('${config.backgroundImage}')`,
+          backgroundPosition: "center",
+          backgroundSize: "cover",
+          width: "100%",
+          height: "100%",
+          position: "absolute",
+          top: 0,
+          left: 0,
+          zIndex: -1,
+        }}
+      />
+      {intro ? <Intro show={setIntro} /> : null}
+      <InfoPopup />
+      <Canvas
+        orthographic
+        camera={{ position: [0, 0, 1], zoom: 75 }}
+        className="noSelect"
+        style={{ visibility: intro ? "hidden" : "visible" }}
+      >
+        <ambientLight color="white" intensity={0.5} />
+        <directionalLight intensity={5} color="white" position={[20, 20, 10]} />
+        <Suspense>
+          <Preload all />
+          <Physics colliders={false} gravity={[0, 0, 0]}>
+            <ViewportCollider />
+            {gameData ? (
+              <BubbleManager
+                gameData={gameData}
+                postScore={postScore}
+                postEnd={postEnd}
+              />
+            ) : null}
+          </Physics>
+        </Suspense>
+      </Canvas>
+    </main>
   )
 }
 
-export default App
+// Create a wrapper component that handles config loading
+function App() {
+  const { config, loading } = useContext(ConfigContext)
+
+  if (loading || !config) {
+    return (
+      <div className="loading-container">
+        <div className="loading-spinner"></div>
+        <div>Loading game configuration...</div>
+      </div>
+    )
+  }
+
+  return <GameApp config={config} />
+}
+
+// Export the wrapped app with provider
+export default function AppWithConfig() {
+  return (
+    <ConfigProvider>
+      <App />
+    </ConfigProvider>
+  )
+}

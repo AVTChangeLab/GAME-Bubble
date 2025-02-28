@@ -1,6 +1,6 @@
 import Bubble from "./Bubble"
 import { Pop, PopT } from "./Pop"
-import { useState, useEffect, Suspense } from "react"
+import { useState, useEffect, useContext, Suspense } from "react"
 import { useThree } from "@react-three/fiber"
 import { useGameData, bubbleT } from "../hooks/useGameData"
 import type { Vector3Object } from "@react-three/rapier"
@@ -9,6 +9,7 @@ import Lottie from "./Lottie"
 import correct from "../assets/lotties/correct.json?url"
 import halfRight from "../assets/lotties/halfRight.json?url"
 import incorrect from "../assets/lotties/incorrect.json?url"
+import { ConfigContext } from "./ConfigContext"
 
 export default function BubbleManager({
   gameData,
@@ -19,6 +20,7 @@ export default function BubbleManager({
   postScore: (points: number, text: string) => void
   postEnd: () => void
 }) {
+  const { config } = useContext(ConfigContext)
   const get = useThree((state) => state.get)
   const { width, height } = get().viewport
   const amount = useGameData(width, height, gameData)
@@ -57,23 +59,24 @@ export default function BubbleManager({
 
   return (
     <>
-      {pos.map((position) => (
-        <Bubble
-          key={position.id}
-          size={position.size}
-          id={position.id}
-          points={position.points}
-          density={0.001}
-          text={position.textContent}
-          position={position.position}
-          clickHandler={clickHandler}
-          fontColor={gameData.fontColor}
-          fontSize={gameData.fontSize}
-          color={"white"}
-          opacity={1}
-          fontWeight={gameData.fontWeight}
-        />
-      ))}
+      {config &&
+        pos.map((position) => (
+          <Bubble
+            key={position.id}
+            size={position.size}
+            id={position.id}
+            points={position.points}
+            density={0.001}
+            text={position.textContent}
+            position={position.position}
+            clickHandler={clickHandler}
+            fontColor={gameData.fontColor}
+            fontSize={gameData.fontSize}
+            color={"white"}
+            opacity={1}
+            fontWeight={gameData.fontWeight}
+          />
+        ))}
       {fx ? (
         <Suspense>
           <Pop data={fxPos} disable={() => setFx(false)} />

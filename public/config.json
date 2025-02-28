@@ -5,7 +5,7 @@
   "color": "white",
   "fontColor": "black",
   "fontWeight": 500,
-  "fontSize": 0.3,
+  "fontSize": 0.25,
   "endAt": 3,
   "bubbleImage": "./bubble_image_1.png",
   "bubbleIcon": "./bubble_icon.svg",
@@ -37,12 +37,12 @@
     },
     {
       "bubbleText": "Ask for ISS ideas",
-      "size": 1.5,
+      "size": 1.25,
       "points": 0
     },
     {
       "bubbleText": "Discuss disease state",
-      "size": 1.5,
+      "size": 1.25,
       "points": 0
     }
   ]

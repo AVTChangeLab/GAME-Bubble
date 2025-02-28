@@ -46,18 +46,14 @@ export default function Bubble({
     text: string,
   ) => void
 }) {
-  const { config, loading } = useContext(ConfigContext)
-  // Early return if the configuration is still loading or failed to load.
-  if (loading) return <div>Loading configuration...</div>
-  if (!config) return <div>Error loading configuration.</div>
-  // Now it's safe to use config
+  const { config } = useContext(ConfigContext)
 
   const rB = useRef<RapierRigidBody>(null)
   const [hovered, setHovered] = useState<boolean>(false)
 
   const fontProp = { "material-toneMapped": false }
 
-  const texture = useTexture(config.bubbleImage ?? "")
+  const texture = useTexture(config?.bubbleImage ?? "")
 
   const [{ scale }, api] = useSpring(
     () => ({
@@ -129,49 +125,51 @@ export default function Bubble({
         }
         onContactForce={handleForce}
       >
-        <BallCollider args={[size]} restitution={1} density={density}>
-          <animated.mesh
-            scale={scale.to((x) => [x, x, 0.25])}
-            onPointerOver={() => setHovered(true)}
-            onPointerLeave={() => {
-              setHovered(false)
-            }}
-            onPointerOut={() => {
-              setHovered(false)
-            }}
-            onClick={handleClick}
-          >
-            <circleGeometry args={[size, 64, 32]} />
-            <meshStandardMaterial
-              transparent
-              color={color}
-              depthWrite={false}
-              roughness={0.15}
-              metalness={0}
-              map={texture ? texture : null}
-              emissive={color}
-              emissiveIntensity={0.5}
-              emissiveMap={texture ? texture : null}
-              opacity={opacity}
-            />
-          </animated.mesh>
-          <Text
-            font={font}
-            maxWidth={size}
-            textAlign="center"
-            anchorX="center"
-            anchorY="middle"
-            whiteSpace="overflowWrap"
-            overflowWrap="normal"
-            fontSize={fontSize}
-            fontWeight={fontWeight}
-            color={fontColor}
-            position={[0, 0, 0.1]}
-            {...fontProp}
-          >
-            {text}
-          </Text>
-        </BallCollider>
+        {config && (
+          <BallCollider args={[size]} restitution={1} density={density}>
+            <animated.mesh
+              scale={scale.to((x) => [x, x, 0.25])}
+              onPointerOver={() => setHovered(true)}
+              onPointerLeave={() => {
+                setHovered(false)
+              }}
+              onPointerOut={() => {
+                setHovered(false)
+              }}
+              onClick={handleClick}
+            >
+              <circleGeometry args={[size, 64, 32]} />
+              <meshStandardMaterial
+                transparent
+                color={color}
+                depthWrite={false}
+                roughness={0.15}
+                metalness={0}
+                map={texture ? texture : null}
+                emissive={color}
+                emissiveIntensity={0.5}
+                emissiveMap={texture ? texture : null}
+                opacity={opacity}
+              />
+            </animated.mesh>
+            <Text
+              font={font}
+              maxWidth={size}
+              textAlign="center"
+              anchorX="center"
+              anchorY="middle"
+              whiteSpace="overflowWrap"
+              overflowWrap="normal"
+              fontSize={fontSize}
+              fontWeight={fontWeight}
+              color={fontColor}
+              position={[0, 0, 0.1]}
+              {...fontProp}
+            >
+              {text}
+            </Text>
+          </BallCollider>
+        )}
       </RigidBody>
     </>
   )
