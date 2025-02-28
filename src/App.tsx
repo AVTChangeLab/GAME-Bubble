@@ -9,6 +9,7 @@ import config from "./assets/config/config.json"
 import "./App.css"
 import { Intro } from "./components/Intro"
 import InfoPopup from "./components/InfoPopup"
+import { ConfigProvider } from "./components/ConfigContext"
 
 type bubbleDataT = {
   bubbleText: string
@@ -52,47 +53,53 @@ function App() {
   }, [])
 
   return (
-    <main>
-      <div
-        style={{
-          backgroundImage: `url('${bg}')`,
-          backgroundPosition: "center",
-          backgroundSize: "cover",
-          width: "100%",
-          height: "100%",
-          position: "absolute",
-          top: 0,
-          left: 0,
-          zIndex: -1,
-        }}
-      />
-      {intro ? <Intro show={setIntro} /> : null}
-      <InfoPopup />
-      <Canvas
-        orthographic
-        camera={{ position: [0, 0, 1], zoom: 75 }}
-        className="noSelect"
-        style={{ visibility: intro ? "hidden" : "visible" }}
-      >
-        <ambientLight color="white" intensity={0.5} />
-        <directionalLight intensity={5} color="white" position={[20, 20, 10]} />
-        <Suspense>
-          <Preload all />
-          <Physics colliders={false} gravity={[0, 0, 0]}>
-            <ViewportCollider />
-            {gameData ? (
-              <BubbleManager
-                gameData={gameData}
-                postScore={postScore}
-                postEnd={postEnd}
-              />
-            ) : (
-              <></>
-            )}
-          </Physics>
-        </Suspense>
-      </Canvas>
-    </main>
+    <ConfigProvider>
+      <main>
+        <div
+          style={{
+            backgroundImage: `url('${bg}')`,
+            backgroundPosition: "center",
+            backgroundSize: "cover",
+            width: "100%",
+            height: "100%",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            zIndex: -1,
+          }}
+        />
+        {intro ? <Intro show={setIntro} /> : null}
+        <InfoPopup />
+        <Canvas
+          orthographic
+          camera={{ position: [0, 0, 1], zoom: 75 }}
+          className="noSelect"
+          style={{ visibility: intro ? "hidden" : "visible" }}
+        >
+          <ambientLight color="white" intensity={0.5} />
+          <directionalLight
+            intensity={5}
+            color="white"
+            position={[20, 20, 10]}
+          />
+          <Suspense>
+            <Preload all />
+            <Physics colliders={false} gravity={[0, 0, 0]}>
+              <ViewportCollider />
+              {gameData ? (
+                <BubbleManager
+                  gameData={gameData}
+                  postScore={postScore}
+                  postEnd={postEnd}
+                />
+              ) : (
+                <></>
+              )}
+            </Physics>
+          </Suspense>
+        </Canvas>
+      </main>
+    </ConfigProvider>
   )
 }
 

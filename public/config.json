@@ -1,5 +1,6 @@
 {
   "backgroundImage": "./background.jpg",
+  "popupBackgroundImage": "./popup_background.png",
   "totalBubbles": 8,
   "color": "white",
   "fontColor": "black",

@@ -8,8 +8,9 @@ import {
 } from "@react-three/rapier"
 import { useRef, useEffect, useState, useCallback } from "react"
 import { useSpring, animated } from "@react-spring/three"
-import img from "../assets/img/img.png"
 import font from "../assets/font/Inter.ttf"
+import { useContext } from "react"
+import { ConfigContext } from "./ConfigContext"
 
 export default function Bubble({
   density = 0.000001,
@@ -45,12 +46,18 @@ export default function Bubble({
     text: string,
   ) => void
 }) {
+  const { config, loading } = useContext(ConfigContext)
+  // Early return if the configuration is still loading or failed to load.
+  if (loading) return <div>Loading configuration...</div>
+  if (!config) return <div>Error loading configuration.</div>
+  // Now it's safe to use config
+
   const rB = useRef<RapierRigidBody>(null)
   const [hovered, setHovered] = useState<boolean>(false)
 
   const fontProp = { "material-toneMapped": false }
 
-  const texture = useTexture(img ?? "")
+  const texture = useTexture(config.bubbleImage ?? "")
 
   const [{ scale }, api] = useSpring(
     () => ({
