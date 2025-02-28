@@ -1,52 +1,48 @@
 {
   "backgroundImage": "./background.jpg",
   "popupBackgroundImage": "./popup_background.png",
-  "totalBubbles": 8,
+  "totalBubbles": 7,
   "color": "white",
   "fontColor": "black",
   "fontWeight": 500,
   "fontSize": 0.3,
   "endAt": 3,
   "bubbleImage": "./bubble_image_1.png",
+  "bubbleIcon": "./bubble_icon.svg",
   "bubbles": [
     {
-      "bubbleText": "It enhances strategies by segmenting customer data",
+      "bubbleText": "Invite to present case series at congress",
       "size": 1.5,
-      "points": 0
+      "points": 10
     },
     {
-      "bubbleText": "The tool uses predictive analytics to forecast patient actions",
+      "bubbleText": "Check understanding of efficacy, safety and tolerability data",
       "size": 1.75,
       "points": 20
     },
     {
-      "bubbleText": "The tool integrates with other systems to streamline customer data management",
-      "size": 2,
-      "points": 20
-    },
-    {
-      "bubbleText": "It improves sales targeting by identifying high-value customers",
+      "bubbleText": "Understand HCP's treatment goals for patients",
       "size": 1.75,
       "points": 20
     },
     {
-      "bubbleText": "It helps businesses improve customer retention by identifying needs",
-      "size": 1.75,
-      "points": 0
-    },
-    {
-      "bubbleText": "It helps identify patterns in customer behavior and interactions",
+      "bubbleText": "Discuss MOA of product vs other drug classes",
       "size": 1.75,
       "points": 10
     },
     {
-      "bubbleText": "It lowers sales targeting by identifying high-value customers",
+      "bubbleText": "Understand thoughts on current guidelines",
       "size": 1.75,
+      "points": 20
+    },
+    {
+      "bubbleText": "Ask for ISS ideas",
+      "size": 1.5,
       "points": 0
     },
     {
-      "bubbleText": "Real-time insights allow decisions to be made quickly",
-      "size": 2,
+      "bubbleText": "Discuss disease state",
+      "size": 1.5,
       "points": 0
     }
   ]

@@ -4,7 +4,6 @@ import { Physics } from "@react-three/rapier"
 import { Preload } from "@react-three/drei"
 import ViewportCollider from "./components/ViewportCollider"
 import BubbleManager from "./components/BubbleManager"
-import bg from "./assets/img/Background.jpg"
 import config from "./assets/config/config.json"
 import "./App.css"
 import { Intro } from "./components/Intro"
@@ -57,7 +56,7 @@ function App() {
       <main>
         <div
           style={{
-            backgroundImage: `url('${bg}')`,
+            backgroundImage: `url('${config.backgroundImage}')`,
             backgroundPosition: "center",
             backgroundSize: "cover",
             width: "100%",

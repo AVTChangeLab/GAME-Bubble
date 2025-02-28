@@ -1,4 +1,3 @@
-import bubble_icon from "../assets/img/bubble_icon.svg"
 import { useContext } from "react"
 import { ConfigContext } from "./ConfigContext"
 
@@ -25,7 +24,7 @@ export default function InfoPopup() {
     >
       {/* Icon */}
       <div className="mr-4 flex items-center justify-center">
-        <img src={bubble_icon} alt="icon" className="h-8 w-8" />
+        <img src={config.bubbleIcon} alt="icon" className="h-8 w-8" />
       </div>
 
       {/* Text */}

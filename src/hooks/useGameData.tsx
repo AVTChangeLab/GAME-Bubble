@@ -1,4 +1,6 @@
 import { Vector3Object } from "@react-three/rapier"
+import { useContext } from "react"
+import { ConfigContext } from "../components/ConfigContext"
 
 export type bubbleT = {
   position: Vector3Object
@@ -13,16 +15,20 @@ import { GameDataT } from "../App"
 export function useGameData(
   width: number,
   height: number,
-  gameData: GameDataT
+  gameData: GameDataT,
 ) {
-  let bubbles = gameData.totalBubbles
-  const textContent = gameData.bubbles.map((val) =>
-    val.bubbleText ? val.bubbleText : ""
+  const { config, loading } = useContext(ConfigContext)
+  // Early return if the configuration is still loading or failed to load.
+  if (loading) return <div>Loading configuration...</div>
+  if (!config) return <div>Error loading configuration.</div>
+  // Now it's safe to use config
+
+  let bubbles = config.totalBubbles
+  const textContent = config.bubbles.map((val) =>
+    val.bubbleText ? val.bubbleText : "",
   )
-  const points = gameData.bubbles.map((val) =>
-    val.points ? val.points : 0
-  )
-  const size = gameData.bubbles.map((val) => (val.size ? val.size : 1))
+  const points = config.bubbles.map((val) => (val.points ? val.points : 0))
+  const size = config.bubbles.map((val) => (val.size ? val.size : 1))
 
   const clamp = (value: number, min: number, max: number): number => {
     return Math.min(Math.max(value, min), max)
@@ -88,7 +94,6 @@ export function useGameData(
     const bubbleArray = makeBubbles(shuffledPositions)
 
     return bubbleArray
-
   }
 
   const bubbleArray = assignPositions()
