@@ -7,11 +7,16 @@ import BubbleManager from "./components/BubbleManager"
 import "./App.css"
 import { Intro } from "./components/Intro"
 import InfoPopup from "./components/InfoPopup"
-import { ConfigProvider, ConfigContext } from "./components/ConfigContext"
+import {
+  ConfigProvider,
+  ConfigContext,
+  Config,
+} from "./components/ConfigContext"
 
 // Move the main App logic to a separate component
 function GameApp({ config }: { config: Config }) {
-  const [gameData, setGameData] = useState<GameDataT | null>(null)
+  // Changed from 'never' to 'Config'
+  const [gameData, setGameData] = useState<Config | null>(null) // Changed from 'null' to 'Config | null'
   const [intro, setIntro] = useState<boolean>(false)
 
   useEffect(() => {
@@ -87,13 +92,16 @@ function App() {
       <div className="loading-container">
         <div className="loading-spinner"></div>
         <div>Loading game configuration...</div>
+        {/* Add error display */}
+        <div style={{ color: "red", marginTop: "1rem" }}>
+          {!config && !loading ? "Failed to load configuration" : ""}
+        </div>
       </div>
     )
   }
 
   return <GameApp config={config} />
 }
-
 // Export the wrapped app with provider
 export default function AppWithConfig() {
   return (
