@@ -4,26 +4,33 @@ import { useState, useEffect, useContext, Suspense } from "react"
 import { useThree } from "@react-three/fiber"
 import { useGameData, bubbleT } from "../hooks/useGameData"
 import type { Vector3Object } from "@react-three/rapier"
-import { GameDataT } from "../App"
 import Lottie from "./Lottie"
 import correct from "../assets/lotties/correct.json?url"
 import halfRight from "../assets/lotties/halfRight.json?url"
 import incorrect from "../assets/lotties/incorrect.json?url"
 import { ConfigContext } from "./ConfigContext"
 
+// Add interface for gameData
+interface GameData {
+  endAt: number
+  fontColor: string
+  fontSize: number
+  fontWeight: number
+}
+
 export default function BubbleManager({
   gameData,
   postScore,
   postEnd,
 }: {
-  gameData: GameDataT
+  gameData: GameData // Update type from null to GameData
   postScore: (points: number, text: string) => void
   postEnd: () => void
 }) {
   const { config } = useContext(ConfigContext)
   const get = useThree((state) => state.get)
   const { width, height } = get().viewport
-  const amount = useGameData(width, height, gameData)
+  const amount = useGameData(width, height)
 
   const [pos, setPos] = useState<bubbleT[]>(amount)
   const [fx, setFx] = useState<boolean>(false)
@@ -52,39 +59,40 @@ export default function BubbleManager({
   }
 
   useEffect(() => {
-    if (count == gameData.endAt && fx === false) {
+    if (count === gameData.endAt && fx === false) {
       postEnd()
     }
   }, [count, postEnd, gameData.endAt, fx])
 
+  if (!config || !gameData) {
+    return null
+  }
+
   return (
     <>
-      {config &&
-        pos.map((position) => (
-          <Bubble
-            key={position.id}
-            size={position.size}
-            id={position.id}
-            points={position.points}
-            density={0.001}
-            text={position.textContent}
-            position={position.position}
-            clickHandler={clickHandler}
-            fontColor={gameData.fontColor}
-            fontSize={gameData.fontSize}
-            color={"white"}
-            opacity={1}
-            fontWeight={gameData.fontWeight}
-          />
-        ))}
+      {pos.map((position) => (
+        <Bubble
+          key={position.id}
+          size={position.size}
+          id={position.id}
+          points={position.points}
+          density={0.001}
+          text={position.textContent}
+          position={position.position}
+          clickHandler={clickHandler}
+          fontColor={gameData.fontColor}
+          fontSize={gameData.fontSize}
+          color={"white"}
+          opacity={1}
+          fontWeight={gameData.fontWeight}
+        />
+      ))}
       {fx ? (
         <Suspense>
           <Pop data={fxPos} disable={() => setFx(false)} />
           <Lottie url={lottie} position={fxPos?.position} />
         </Suspense>
-      ) : (
-        <></>
-      )}
+      ) : null}
     </>
   )
 }

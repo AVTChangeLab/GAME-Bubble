@@ -1,5 +1,25 @@
 import React, { createContext, useState, useEffect } from "react"
 
+interface BubbleConfig {
+  bubbleText: string
+  size: number
+  points: number
+}
+
+export interface Config {
+  backgroundImage: string
+  popupBackgroundImage: string
+  totalBubbles: number
+  color: string
+  fontColor: string
+  fontWeight: number
+  fontSize: number
+  endAt: number
+  bubbleImage: string
+  bubbleIcon: string
+  bubbles: BubbleConfig[]
+}
+
 interface ConfigContextType {
   config: Config | null
   loading: boolean
@@ -19,7 +39,7 @@ export const ConfigProvider: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     const loadConfig = async () => {
       try {
-        const response = await fetch("/config.json")
+        const response = await fetch("./config.json")
         if (!response.ok) {
           throw new Error("Failed to fetch configuration")
         }
