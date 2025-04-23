@@ -1,48 +1,55 @@
 {
   "backgroundImage": "./background.jpg",
   "popupBackgroundImage": "./popup_background.png",
-  "totalBubbles": 7,
+  "totalBubbles": 8,
+  "positionalGap": 2.75,
   "color": "white",
-  "fontColor": "black",
+  "fontColor": "white",
   "fontWeight": 500,
   "fontSize": 0.25,
-  "endAt": 3,
-  "bubbleImage": "./bubble_image_1.png",
+  "endAt": 4,
+  "usePopLottie": true,
+  "bubbleImage": "./bubble_image_3.png",
   "bubbleIcon": "./bubble_icon.svg",
   "bubbles": [
     {
-      "bubbleText": "Invite to present case series at congress",
+      "bubbleText": "Personalized HCP Journeys",
+      "size": 2.5,
+      "points": 20
+    },
+    {
+      "bubbleText": "Right Content, Right Channel",
+      "size": 2,
+      "points": 20
+    },
+    {
+      "bubbleText": "Customer 360 View",
+      "size": 2,
+      "points": 20
+    },
+    {
+      "bubbleText": "Mass Emails",
       "size": 1.5,
-      "points": 10
-    },
-    {
-      "bubbleText": "Check understanding of efficacy, safety and tolerability data",
-      "size": 1.75,
-      "points": 20
-    },
-    {
-      "bubbleText": "Understand HCP's treatment goals for patients",
-      "size": 1.75,
-      "points": 20
-    },
-    {
-      "bubbleText": "Discuss MOA of product vs other drug classes",
-      "size": 1.75,
-      "points": 10
-    },
-    {
-      "bubbleText": "Understand thoughts on current guidelines",
-      "size": 1.75,
-      "points": 20
-    },
-    {
-      "bubbleText": "Ask for ISS ideas",
-      "size": 1.25,
       "points": 0
     },
     {
-      "bubbleText": "Discuss disease state",
-      "size": 1.25,
+      "bubbleText": "Static Brochures",
+      "size": 2,
+      "points": 0
+    },
+    {
+      "bubbleText": "Data-Driven Insights",
+      "size": 1.5,
+      "points": 20
+    },
+    {
+      "bubbleText": "Campaign Optimization",
+      "size": 1.5,
+      "points": 0
+    },
+    {
+      "bubbleText": "Omnichannel Measurement",
+      "size": 2.5,
       "points": 0
     }
   ]

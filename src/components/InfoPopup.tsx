@@ -29,8 +29,7 @@ export default function InfoPopup() {
 
       {/* Text */}
       <p className="text-white font-medium" style={{ color: "white" }}>
-        Pop the relevant bubbles with the correct statements and leave the
-        bubbles that have irrelevant statements.
+      Pick the 4 essentials strategic items that create an Omnichannel Strategy
       </p>
     </div>
   )
