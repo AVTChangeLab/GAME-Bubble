@@ -8,6 +8,7 @@ import Lottie from "./Lottie"
 import correct from "../assets/lotties/correct.json?url"
 import halfRight from "../assets/lotties/halfRight.json?url"
 import incorrect from "../assets/lotties/incorrect.json?url"
+import asteroid from "../assets/lotties/asteroid.json?url"
 import { ConfigContext } from "./ConfigContext"
 
 // Add interface for gameData
@@ -90,6 +91,11 @@ export default function BubbleManager({
       {fx ? (
         <Suspense>
           <Pop data={fxPos} disable={() => setFx(false)} />
+          <Lottie
+            url={asteroid}
+            position={fxPos?.position}
+            scale={fxPos?.radius} // Add this line
+          />
           <Lottie url={lottie} position={fxPos?.position} />
         </Suspense>
       ) : null}

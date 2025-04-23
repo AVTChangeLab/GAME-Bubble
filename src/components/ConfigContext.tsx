@@ -18,6 +18,7 @@ export interface Config {
   bubbleImage: string
   bubbleIcon: string
   bubbles: BubbleConfig[]
+  positionalGap: number
 }
 
 interface ConfigContextType {

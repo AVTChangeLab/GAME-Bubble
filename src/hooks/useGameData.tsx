@@ -26,7 +26,7 @@ export function useGameData(width: number, height: number): bubbleT[] {
 
   const createArray = (size: number): Vector3Object[] => {
     let result: Vector3Object[] = []
-    const gap = 3.5 * size
+    const gap = config.positionalGap * size
     for (let x = -width / 2; x < width / 2; x += gap) {
       for (let y = -height / 2; y < height / 2; y += gap) {
         const clampedX = clamp(x, -width / 2 + size, width / 2 - size)

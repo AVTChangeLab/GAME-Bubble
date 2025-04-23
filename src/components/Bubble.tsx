@@ -8,7 +8,7 @@ import {
 } from "@react-three/rapier"
 import { useRef, useEffect, useState, useCallback } from "react"
 import { useSpring, animated } from "@react-spring/three"
-import font from "../assets/font/Inter.ttf"
+import font from "../assets/font/Inter_18pt-Medium.ttf"
 import { useContext } from "react"
 import { ConfigContext } from "./ConfigContext"
 
@@ -160,7 +160,7 @@ export default function Bubble({
               anchorY="middle"
               whiteSpace="overflowWrap"
               overflowWrap="normal"
-              fontSize={fontSize}
+              fontSize={fontSize * size/2.2}
               fontWeight={fontWeight}
               color={fontColor}
               position={[0, 0, 0.1]}

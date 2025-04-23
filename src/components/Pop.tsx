@@ -1,10 +1,11 @@
 import { Vector3, Euler } from "three"
 import type { Group } from "three"
 import { Instance, Instances } from "@react-three/drei"
-import { useRef, memo } from "react"
+import { useRef, useContext, memo } from "react"
 import { useFrame } from "@react-three/fiber"
 import { useSpring, animated } from "@react-spring/three"
 import { Vector3Object } from "@react-three/rapier"
+import { ConfigContext } from "./ConfigContext"
 
 export type PopT = {
   position: Vector3Object
@@ -19,7 +20,6 @@ export const Pop = memo(function ({
   data?: PopT
   disable: () => void
 }) {
-
   const { opacity } = useSpring({
     from: { opacity: 0.8 },
     to: { opacity: 0 },
@@ -51,7 +51,7 @@ export const Pop = memo(function ({
       <animated.meshStandardMaterial
         transparent
         color={data.color}
-        depthWrite={false}  
+        depthWrite={false}
         roughness={0.15}
         metalness={0}
         opacity={opacity}
@@ -79,28 +79,30 @@ function InstancedPops({
   let count = 0
   let t = 1
 
-  useFrame((_state, delta) => {
+  const { config } = useContext(ConfigContext)
 
+  useFrame((_state, delta) => {
     if (count < 8) {
-        t = delta * rand * 1.5
+      t = delta * rand * 1.5
+    } else {
+      t = delta * 0.9
     }
-    else{
-        t = delta * 0.9
+    if (ref.current) {
+      ref.current.translateX(t)
     }
-      if (ref.current) {
-        ref.current.translateX(t)
-      }
-      count++
+    count++
   })
 
   return (
     <group>
-      <Instance
-        ref={ref}
-        position={position}
-        scale={scale}
-        rotation={rotation}
-      />
+      {config ? (
+        <Instance
+          ref={ref}
+          position={position}
+          scale={scale}
+          rotation={rotation}
+        />
+      ) : null}
     </group>
   )
 }
