@@ -14,6 +14,7 @@ import { ConfigContext } from "./ConfigContext"
 // Add interface for gameData
 interface GameData {
   endAt: number
+  endAutomatically: boolean
   fontColor: string
   fontSize: number
   fontWeight: number
@@ -23,10 +24,12 @@ export default function BubbleManager({
   gameData,
   postScore,
   postEnd,
+  onShowContinue,
 }: {
   gameData: GameData // Update type from null to GameData
   postScore: (points: number, text: string) => void
   postEnd: () => void
+  onShowContinue?: () => void
 }) {
   const { config } = useContext(ConfigContext)
   const get = useThree((state) => state.get)
@@ -61,9 +64,20 @@ export default function BubbleManager({
 
   useEffect(() => {
     if (count === gameData.endAt && fx === false) {
-      postEnd()
+      if (gameData.endAutomatically) {
+        postEnd()
+      } else {
+        if (onShowContinue) onShowContinue()
+      }
     }
-  }, [count, postEnd, gameData.endAt, fx])
+  }, [
+    count,
+    postEnd,
+    gameData.endAt,
+    gameData.endAutomatically,
+    fx,
+    onShowContinue,
+  ])
 
   if (!config || !gameData) {
     return null

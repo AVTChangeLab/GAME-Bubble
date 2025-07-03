@@ -12,12 +12,14 @@ import {
   ConfigContext,
   Config,
 } from "./components/ConfigContext"
+import { Button } from "./components/Button"
 
 // Move the main App logic to a separate component
 function GameApp({ config }: { config: Config }) {
   // Changed from 'never' to 'Config'
   const [gameData, setGameData] = useState<Config | null>(null) // Changed from 'null' to 'Config | null'
   const [intro, setIntro] = useState<boolean>(false)
+  const [continueDisabled, setContinueDisabled] = useState(true) // Add state
 
   useEffect(() => {
     setGameData(config)
@@ -37,8 +39,17 @@ function GameApp({ config }: { config: Config }) {
   }
 
   const postEnd = () => {
-    window.parent.postMessage({ message: "nextSlide", value: "nextSlide" }, "*")
+    window.parent.postMessage({ message: "finish", value: "finish" }, "*")
   }
+
+  // Handler to enable the continue button
+  const handleShowContinue = () => {
+    setContinueDisabled(false)
+  }
+
+  // const postReset = () => {
+  //   window.parent.postMessage({ message: "reset", value: "reset" }, "*")
+  // }
 
   return (
     <main>
@@ -74,11 +85,17 @@ function GameApp({ config }: { config: Config }) {
                 gameData={gameData}
                 postScore={postScore}
                 postEnd={postEnd}
+                onShowContinue={handleShowContinue}
               />
             ) : null}
           </Physics>
         </Suspense>
       </Canvas>
+      {!config.endAutomatically && !continueDisabled ? (
+        <Button className="continue-button" onClick={() => postEnd()}>
+          Continue
+        </Button>
+      ) : null}
     </main>
   )
 }

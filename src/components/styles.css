@@ -10,3 +10,21 @@
   place-items: center;
   z-index: 999;
 }
+
+.continue-button {
+  position: absolute;
+  bottom: 3rem;
+  right: 4rem;
+  width: 15rem;
+  height: 3rem;
+  background-color: #0094ff; /* Blue */
+  color: white;
+  border: none;
+  border-radius: 6px; /* rounded-md */
+  cursor: pointer;
+  font-size: 0.9rem; /* text-lg */
+}
+
+.continue-button:hover {
+  opacity: 90%;
+}

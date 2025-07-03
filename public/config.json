@@ -8,6 +8,7 @@
   "fontWeight": 500,
   "fontSize": 0.3,
   "endAt": 4,
+  "endAutomatically": true,
   "usePopLottie": true,
   "bubbleImage": "./bubble_image_3.png",
   "bubbleIcon": "./bubble_icon.svg",

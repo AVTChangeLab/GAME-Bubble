@@ -15,6 +15,7 @@ export interface Config {
   fontWeight: number
   fontSize: number
   endAt: number
+  endAutomatically: boolean
   bubbleImage: string
   bubbleIcon: string
   bubbles: BubbleConfig[]
