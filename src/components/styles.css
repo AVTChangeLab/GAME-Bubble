@@ -28,3 +28,46 @@
 .continue-button:hover {
   opacity: 90%;
 }
+
+.information {
+  position: absolute;
+  inset: auto 1rem 1rem auto;
+  z-index: 1000;
+  box-sizing: border-box;
+  top: 4rem;
+  left: 4rem;
+  display: flex;
+  gap: 2rem;
+  background-color: rgba(0, 0, 0, 0.7);
+  max-height: fit-content;
+  max-width: 500px;
+  padding: 1rem;
+  border-radius: 1rem;
+  align-items: center;
+}
+
+@media (max-width: 999px) {
+  .information {
+    position: absolute;
+    opacity: 0.9;
+    z-index: 1000;
+    top: 7rem;
+    left: 1rem;
+    background-color: black;
+    border-radius: 10%;
+    padding: 1rem;
+    max-width: 250px;
+  }
+}
+
+/* By default, the icon is visible */
+.popup-icon {
+  display: flex; /* Or whatever display property you need for larger screens */
+}
+
+/* Hide the icon on screens with a maximum width of 999px */
+@media (max-width: 999px) {
+  .popup-icon {
+    display: none;
+  }
+}

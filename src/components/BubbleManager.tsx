@@ -88,10 +88,10 @@ export default function BubbleManager({
       {pos.map((position) => (
         <Bubble
           key={position.id}
-          size={position.size}
+          size={position.size * (width * 0.05)} // Scale size with viewport width
           id={position.id}
           points={position.points}
-          density={0.001}
+          density={0.001 / width} // Scale density inversely with viewport width
           text={position.textContent}
           position={position.position}
           clickHandler={clickHandler}

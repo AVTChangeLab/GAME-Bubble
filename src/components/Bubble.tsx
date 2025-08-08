@@ -160,7 +160,7 @@ export default function Bubble({
               anchorY="middle"
               whiteSpace="overflowWrap"
               overflowWrap="normal"
-              fontSize={fontSize * size/2.2}
+              fontSize={(fontSize * size) / 2.2}
               fontWeight={fontWeight}
               color={fontColor}
               position={[0, 0, 0.1]}
