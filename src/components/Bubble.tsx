@@ -25,6 +25,7 @@ export default function Bubble({
   color,
   opacity,
   fontWeight,
+  isGameEnding, // Add the new prop
 }: {
   density?: number
   text?: string
@@ -45,6 +46,7 @@ export default function Bubble({
     points: number,
     text: string,
   ) => void
+  isGameEnding: boolean // Define the new prop type
 }) {
   const { config } = useContext(ConfigContext)
 
@@ -85,8 +87,10 @@ export default function Bubble({
   }, [position])
 
   useEffect(() => {
-    document.body.style.cursor = hovered ? "pointer" : "default"
-  }, [hovered])
+    // Update cursor only if the game is not ending
+    document.body.style.cursor =
+      hovered && !isGameEnding ? "pointer" : "default"
+  }, [hovered, isGameEnding])
 
   const handleForce = useCallback(
     ({ totalForceMagnitude }: { totalForceMagnitude: number }) => {
@@ -99,78 +103,78 @@ export default function Bubble({
   )
 
   const handleClick = useCallback(() => {
+    // Do not allow clicks if the game is ending
+    if (isGameEnding) return
     api.start({
       to: [{ scale: 0.8 }, { scale: 1.1 }],
       onRest: () =>
         clickHandler(id, rB.current!.translation(), size, color, points, text),
       config: { friction: 10, mass: 0.5, tension: 500 },
     })
-  }, [api, clickHandler, id, size, color, points, text])
+  }, [api, clickHandler, id, size, color, points, text, isGameEnding])
 
   return (
-    <>
-      <RigidBody
-        ref={rB}
-        linearDamping={0}
-        position={[-100, 0, -1]}
-        onSleep={() =>
-          rB.current?.setLinvel(
-            {
-              x: Math.random() < 0.5 ? -1.2 : 1.2,
-              y: Math.random() < 0.5 ? -1.2 : 1.2,
-              z: 0,
-            },
-            true,
-          )
-        }
-        onContactForce={handleForce}
-      >
-        {config && (
-          <BallCollider args={[size]} restitution={1} density={density}>
-            <animated.mesh
-              scale={scale.to((x) => [x, x, 0.25])}
-              onPointerOver={() => setHovered(true)}
-              onPointerLeave={() => {
-                setHovered(false)
-              }}
-              onPointerOut={() => {
-                setHovered(false)
-              }}
-              onClick={handleClick}
-            >
-              <circleGeometry args={[size, 64, 32]} />
-              <meshStandardMaterial
-                transparent
-                color={color}
-                depthWrite={false}
-                roughness={0.15}
-                metalness={0}
-                map={texture ? texture : null}
-                emissive={color}
-                emissiveIntensity={0.5}
-                emissiveMap={texture ? texture : null}
-                opacity={opacity}
-              />
-            </animated.mesh>
-            <Text
-              font={font}
-              maxWidth={size}
-              textAlign="center"
-              anchorX="center"
-              anchorY="middle"
-              whiteSpace="overflowWrap"
-              overflowWrap="normal"
-              fontSize={(fontSize * size) / 2.2}
-              fontWeight={fontWeight}
-              color={fontColor}
-              position={[0, 0, 0.1]}
-              {...fontProp}
-            >
-              {text}
-            </Text>
-          </BallCollider>
-        )}
-      </RigidBody>
-    </>
+    <RigidBody
+      ref={rB}
+      linearDamping={0}
+      position={[-100, 0, -1]}
+      onSleep={() =>
+        rB.current?.setLinvel(
+          {
+            x: Math.random() < 0.5 ? -1.2 : 1.2,
+            y: Math.random() < 0.5 ? -1.2 : 1.2,
+            z: 0,
+          },
+          true,
+        )
+      }
+      onContactForce={handleForce}
+    >
+      {config && (
+        <BallCollider args={[size]} restitution={1} density={density}>
+          <animated.mesh
+            scale={scale.to((x) => [x, x, 0.25])}
+            onPointerOver={() => setHovered(true)}
+            onPointerLeave={() => {
+              setHovered(false)
+            }}
+            onPointerOut={() => {
+              setHovered(false)
+            }}
+            onClick={handleClick}
+          >
+            <circleGeometry args={[size, 64, 32]} />
+            <meshStandardMaterial
+              transparent
+              color={color}
+              depthWrite={false}
+              roughness={0.15}
+              metalness={0}
+              map={texture ? texture : null}
+              emissive={color}
+              emissiveIntensity={0.5}
+              emissiveMap={texture ? texture : null}
+              opacity={opacity}
+            />
+          </animated.mesh>
+          <Text
+            font={font}
+            maxWidth={size}
+            textAlign="center"
+            anchorX="center"
+            anchorY="middle"
+            whiteSpace="overflowWrap"
+            overflowWrap="normal"
+            fontSize={(fontSize * size) / 2.2}
+            fontWeight={fontWeight}
+            color={fontColor}
+            position={[0, 0, 0.1]}
+            {...fontProp}
+          >
+            {text}
+          </Text>
+        </BallCollider>
+      )}
+    </RigidBody>
   )
 }

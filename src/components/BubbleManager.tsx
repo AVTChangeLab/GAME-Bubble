@@ -26,10 +26,10 @@ export default function BubbleManager({
   postEnd,
   onShowContinue,
 }: {
-  gameData: GameData // Update type from null to GameData
+  gameData: GameData
   postScore: (points: number, text: string) => void
-  postEnd: () => void
-  onShowContinue?: () => void
+  postEnd: (points: number) => void
+  onShowContinue?: (score: number) => void
 }) {
   const { config } = useContext(ConfigContext)
   const get = useThree((state) => state.get)
@@ -41,6 +41,9 @@ export default function BubbleManager({
   const [fxPos, setFxPos] = useState<PopT>()
   const [count, setCount] = useState<number>(0)
   const [lottie, setLottie] = useState<string>(correct)
+  // New state to signal the end of the game
+  const [isGameEnding, setIsGameEnding] = useState<boolean>(false)
+  const [totalPoints, setTotalPoints] = useState<number>(0)
 
   const clickHandler = (
     id: number,
@@ -50,24 +53,28 @@ export default function BubbleManager({
     points: number,
     text: string,
   ) => {
-    if (fx) return
+    // Disable click handler if the game is ending
+    if (fx || isGameEnding) return
     document.body.style.cursor = "default"
     if (points === 20) setLottie(correct)
     if (points === 10) setLottie(halfRight)
     if (points === 0) setLottie(incorrect)
     setCount((prev) => prev + 1)
     postScore(points, text)
+    setTotalPoints((prev) => prev + points)
     setPos(pos.filter((a) => a.id !== id))
     setFxPos({ position: position, radius: size, color: color })
     setFx(true)
   }
 
   useEffect(() => {
+    // Trigger game ending sequence
     if (count === gameData.endAt && fx === false) {
+      setIsGameEnding(true)
       if (gameData.endAutomatically) {
-        postEnd()
+        postEnd(totalPoints)
       } else {
-        if (onShowContinue) onShowContinue()
+        if (onShowContinue) onShowContinue(totalPoints)
       }
     }
   }, [
@@ -79,6 +86,27 @@ export default function BubbleManager({
     onShowContinue,
   ])
 
+  // New useEffect to handle simultaneous popping
+  useEffect(() => {
+    if (isGameEnding && pos.length > 0) {
+      pos.forEach((bubble, index) => {
+        setTimeout(() => {
+          setFxPos({
+            position: bubble.position,
+            radius: bubble.size * (width * 0.05),
+            color: "white",
+          })
+          setLottie(asteroid)
+          setFx(true)
+        }, index * 100) // Delay each pop slightly for a staggered effect
+      })
+      // Clear the remaining bubbles after they have all popped
+      setTimeout(() => {
+        setPos([])
+      }, pos.length * 100)
+    }
+  }, [isGameEnding, pos, width])
+
   if (!config || !gameData) {
     return null
   }
@@ -88,10 +116,10 @@ export default function BubbleManager({
       {pos.map((position) => (
         <Bubble
           key={position.id}
-          size={position.size * (width * 0.05)} // Scale size with viewport width
+          size={position.size * (width * 0.05)}
           id={position.id}
           points={position.points}
-          density={0.001 / width} // Scale density inversely with viewport width
+          density={0.001 / width}
           text={position.textContent}
           position={position.position}
           clickHandler={clickHandler}
@@ -100,6 +128,7 @@ export default function BubbleManager({
           color={"white"}
           opacity={1}
           fontWeight={gameData.fontWeight}
+          isGameEnding={isGameEnding} // Pass the new prop
         />
       ))}
       {fx ? (
@@ -108,7 +137,7 @@ export default function BubbleManager({
           <Lottie
             url={asteroid}
             position={fxPos?.position}
-            scale={fxPos?.radius} // Add this line
+            scale={fxPos?.radius}
           />
           <Lottie url={lottie} position={fxPos?.position} />
         </Suspense>

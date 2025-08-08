@@ -20,36 +20,62 @@ function GameApp({ config }: { config: Config }) {
   const [gameData, setGameData] = useState<Config | null>(null) // Changed from 'null' to 'Config | null'
   const [intro, setIntro] = useState<boolean>(false)
   const [continueDisabled, setContinueDisabled] = useState(true) // Add state
+  const [finalScore, setFinalScore] = useState<number>(0)
+  const [gameId, setGameId] = useState<number>(0)
 
   useEffect(() => {
     setGameData(config)
   }, [config])
 
   const postScore = (points: number, text: string) => {
-    if (window.parent) {
-      window.parent.postMessage(
-        {
-          message: "updateScore",
-          value: points,
-          choice: text,
-        },
-        "*",
-      )
-    }
+    window.postMessage(
+      {
+        message: "updateScore",
+        value: points,
+        choice: text,
+      },
+      "*",
+    )
   }
 
-  const postEnd = () => {
-    window.parent.postMessage({ message: "finish", value: "finish" }, "*")
+  const postEnd = (points: number) => {
+    window.parent.postMessage(
+      {
+        message: "showNextPage",
+        score: points,
+        currentGameId: gameId,
+      },
+      "*",
+    )
   }
 
   // Handler to enable the continue button
-  const handleShowContinue = () => {
+  const handleShowContinue = (score: number) => {
+    setFinalScore(score)
     setContinueDisabled(false)
   }
 
   // const postReset = () => {
   //   window.parent.postMessage({ message: "reset", value: "reset" }, "*")
   // }
+
+  /* Event listener */
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      if (event.data && event.data.message === "showNextPage") {
+        console.log("Received message from parent:", event.data)
+        setGameId(event.data.gameId)
+      }
+    }
+
+    // Add the event listener when the component mounts
+    window.addEventListener("message", handleMessage)
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      window.removeEventListener("message", handleMessage)
+    }
+  }, []) // The empty dependency array ensures this runs only once
 
   return (
     <main>
@@ -92,7 +118,7 @@ function GameApp({ config }: { config: Config }) {
         </Suspense>
       </Canvas>
       {!config.endAutomatically && !continueDisabled ? (
-        <Button className="continue-button" onClick={() => postEnd()}>
+        <Button className="continue-button" onClick={() => postEnd(finalScore)}>
           Continue
         </Button>
       ) : null}

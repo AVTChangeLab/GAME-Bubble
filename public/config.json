@@ -8,34 +8,34 @@
   "fontWeight": 500,
   "fontSize": 0.3,
   "endAt": 4,
-  "endAutomatically": true,
+  "endAutomatically": false,
   "usePopLottie": true,
   "bubbleImage": "./bubble_image_3.png",
   "bubbleIcon": "./bubble_icon.svg",
   "bubbles": [
     {
       "bubbleText": "Personalized HCP Journeys",
-      "size": 2.5,
+      "size": 1.5,
       "points": 20
     },
     {
       "bubbleText": "Right Content, Right Channel",
-      "size": 2,
+      "size": 1.5,
       "points": 20
     },
     {
       "bubbleText": "Customer 360 View",
-      "size": 2,
+      "size": 1.5,
       "points": 20
     },
     {
       "bubbleText": "Mass Emails",
-      "size": 1.5,
+      "size": 1.25,
       "points": 0
     },
     {
       "bubbleText": "Static Brochures",
-      "size": 2,
+      "size": 1.5,
       "points": 0
     },
     {
@@ -50,7 +50,7 @@
     },
     {
       "bubbleText": "Omnichannel Measurement",
-      "size": 2.5,
+      "size": 2,
       "points": 0
     }
   ]
