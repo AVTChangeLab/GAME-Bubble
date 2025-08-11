@@ -22,13 +22,14 @@ function GameApp({ config }: { config: Config }) {
   const [continueDisabled, setContinueDisabled] = useState(true) // Add state
   const [finalScore, setFinalScore] = useState<number>(0)
   const [gameId, setGameId] = useState<number>(0)
+  const [pageNumber, setPageNumber] = useState<number>(0)
 
   useEffect(() => {
     setGameData(config)
   }, [config])
 
   const postScore = (points: number, text: string) => {
-    window.postMessage(
+    window.parent.postMessage(
       {
         message: "updateScore",
         value: points,
@@ -44,6 +45,7 @@ function GameApp({ config }: { config: Config }) {
         message: "showNextPage",
         score: points,
         currentGameId: gameId,
+        page: pageNumber,
       },
       "*",
     )
@@ -65,6 +67,7 @@ function GameApp({ config }: { config: Config }) {
       if (event.data && event.data.message === "showNextPage") {
         console.log("Received message from parent:", event.data)
         setGameId(event.data.gameId)
+        setPageNumber(event.data.page)
       }
     }
 
