@@ -23,6 +23,7 @@ function GameApp({ config }: { config: Config }) {
   const [finalScore, setFinalScore] = useState<number>(0)
   const [gameId, setGameId] = useState<number>(0)
   const [pageNumber, setPageNumber] = useState<number>(0)
+  const [totalGameScore, setTotalGameScore] = useState<number>(0)
 
   useEffect(() => {
     setGameData(config)
@@ -40,11 +41,15 @@ function GameApp({ config }: { config: Config }) {
   }
 
   const postEnd = (points: number) => {
+    console.log("Message sent to parent: requestForNextPage")
+    console.log("Bubble game has ended, Game ID is: " + gameId)
+    console.log("Bubble game has ended, Page number is: " + pageNumber)
     window.parent.postMessage(
       {
-        message: "showNextPage",
+        message: "requestForNextPage",
         score: points,
-        currentGameId: gameId,
+        totalGameScore: totalGameScore,
+        gameId: gameId,
         page: pageNumber,
       },
       "*",
@@ -65,9 +70,12 @@ function GameApp({ config }: { config: Config }) {
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       if (event.data && event.data.message === "showNextPage") {
-        console.log("Received message from parent:", event.data)
+        console.log("Bubble Game - Received message from parent:", event.data)
         setGameId(event.data.gameId)
         setPageNumber(event.data.page)
+        setTotalGameScore(event.data.totalGameScore)
+        console.log("Game ID is: " + event.data.gameId)
+        window.removeEventListener("message", handleMessage)
       }
     }
 
